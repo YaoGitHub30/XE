@@ -46,25 +46,24 @@ const LiveRate = () => {
   return (
     <Paper>
       <List>
-        <ListItem>{baseCurrency}22222</ListItem>
-        <Divider></Divider>11112222
-        <ListItem>
-          11111
-          {counterCurrencies.map((currency) => (
-            <>
-              <ListItemText
-                onClick={() => changeBaseCurrency(currency)}
-                key={v4()}
-              >
-                {currency}{" "}
-                {exRate.length > 0 &&
-                  exRate.filter((rate) => rate.quotecurrency === currency)[0]
-                    .mid}
-              </ListItemText>
-              <Divider></Divider>
-            </>
-          ))}
-        </ListItem>
+        <ListItem>{baseCurrency}</ListItem>
+        <Divider></Divider>
+
+        {counterCurrencies.map((currency) => (
+          <ListItem>
+            <ListItemText
+              onClick={() => changeBaseCurrency(currency)}
+              key={v4()}
+            >
+              {currency}{" "}
+              {exRate.length > 0 &&
+                exRate.filter((rate) => rate.quotecurrency === currency)[0] &&
+                exRate.filter((rate) => rate.quotecurrency === currency)[0].mid}
+            </ListItemText>
+            <Divider></Divider>
+          </ListItem>
+        ))}
+
         {isEditing ? (
           <CurrencySelector onChange={addCurrency} id="Add Currency" />
         ) : (
