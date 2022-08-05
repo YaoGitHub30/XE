@@ -1,4 +1,4 @@
-import CurrencySelector from "./CurrencySelector";
+import {CurrencySelector} from "./CurrencySelector";
 import { useState } from "react";
 import LineChart from "./LineChart";
 import * as React from "react";
@@ -49,7 +49,9 @@ const Chart = () => {
             onChange={(e) => setCounterCurrency(e.target.value)}
           />
         </FormControl>
-      <Button variant="contained" onClick={() => setIsClicked(true)}>View Chart</Button>
+        <Button variant="contained" onClick={() => setIsClicked(true)}>
+          View Chart
+        </Button>
       </Grid>
       {isClicked ? (
         <LineChart
@@ -58,7 +60,6 @@ const Chart = () => {
           counterCurrency={counterCurrency}
         />
       ) : null}
-      
     </div>
   );
 };

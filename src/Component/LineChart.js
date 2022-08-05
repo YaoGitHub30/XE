@@ -2,6 +2,7 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { useState, useEffect } from "react";
 import { createRoutesFromChildren } from "react-router-dom";
+import { today } from "./CurrencySelector";
 
 const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
   const [exRate, setExRate] = useState([]);
@@ -12,12 +13,12 @@ const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
     const credentials = btoa("ga630297588:5ffi12493ts3b85utvme5he247");
     const auth = { Authorization: `Basic ${credentials}` };
     const url =
-      "https://xecdapi.xe.com/v1/historic_rate/period/?" +
+      "https://xecdapi.xe2.com/v1/historic_rate/period/?" +
       new URLSearchParams({
         from: baseCurrency,
         to: counterCurrency,
-        start_timestamp: "2022-07-01T00:00",
-        end_timestamp: "2022-07-31T00:00",
+        start_timestamp: "2022-07-05T00:00",
+        end_timestamp: `${today}T00:00`,
         interval: "daily",
         amount: 1,
       });
@@ -34,6 +35,7 @@ const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
       });
   }, [isClicked, baseCurrency]);
   console.log({ exRate });
+  console.log(today)
 
   const timeFrame = (period) => {
     const labelsStamp = exRate.map((data) => data.timestamp);
