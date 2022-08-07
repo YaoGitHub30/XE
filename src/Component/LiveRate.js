@@ -15,7 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { yesterday } from "./CurrencySelector";
 
-const LiveRate = () => {
+const LiveRate = ({ changeBadge }) => {
   const [baseCurrency, setBaseCurrency] = useState("USD");
   const [counterCurrencies, setCounterCurrencies] = useState(["AUD"]);
   const [exRate, setExRate] = useState([]);
@@ -23,7 +23,9 @@ const LiveRate = () => {
   const [isEditing, toggleIsEditing] = useToggleState();
 
   useEffect(() => {
-    const credentials = btoa("ga690126616:pg49tjn29ru6p0l4m1mmppdi21");
+    const XE_API_KEY = process.env.REACT_APP_XE_API_KEY;
+    const credentials = btoa(XE_API_KEY);
+    //const credentials = btoa("ga690126616:pg49tjn29ru6p0l4m1mmppdi21");
     const auth = { Authorization: `Basic ${credentials}` };
     const url1 =
       "https://xecdapi.xe.com/v1/convert_from?" +
@@ -37,12 +39,11 @@ const LiveRate = () => {
       new URLSearchParams({
         from: baseCurrency,
         to: counterCurrencies.join(),
-        start_timestamp: `2022-08-04T00:00`,
-        end_timestamp: `2022-08-04T00:00`,
+        start_timestamp: `${yesterday}T00:00`,
+        end_timestamp: `${yesterday}T00:00`,
         interval: "daily",
         amount: 1,
       });
-
     fetch(url1, { headers: auth })
       .then((response) => response.json())
       .then((jsonData) => {
@@ -56,18 +57,17 @@ const LiveRate = () => {
       });
   }, [counterCurrencies]);
 
-  console.log({ yesterdayRate });
-
   const addCurrency = (e) => {
-    console.log(e);
     setCounterCurrencies([...counterCurrencies, e.target.value]);
     toggleIsEditing();
   };
+
   const remove = (e) => {
     setCounterCurrencies(
       counterCurrencies.filter((counterCurrency) => counterCurrency !== e)
     );
   };
+
   const changeBaseCurrency = (currency) => {
     const newCounterCurrencies = counterCurrencies.filter(
       (counterCurrency) => counterCurrency !== currency
@@ -75,7 +75,7 @@ const LiveRate = () => {
     setCounterCurrencies([...newCounterCurrencies, baseCurrency]);
     setBaseCurrency(currency);
   };
-  console.log({ EX: exRate });
+
   const currentRate = (currency) => {
     return (
       exRate.length > 0 &&
@@ -92,6 +92,24 @@ const LiveRate = () => {
       yesterdayRate[currency][0].mid
     );
   };
+  const rateChange = (currency) => {
+    return (
+      (
+        (prevRate(currency) && currentRate(currency) / prevRate(currency) - 1) *
+        100
+      ).toFixed(2) + "%"
+    );
+  };
+  useEffect(() => {
+    counterCurrencies.map((currency) => {
+      const diff =
+        (prevRate(currency) && currentRate(currency) / prevRate(currency) - 1) *
+        100;
+      if (!Number.isNaN(diff) && Math.abs(diff) > 0.1) {
+        changeBadge(currency + " alert, change is " + diff.toFixed(2) + "%");
+      }
+    });
+  }, [counterCurrencies, yesterdayRate]);
 
   return (
     <div>
@@ -122,15 +140,15 @@ const LiveRate = () => {
                     {currency}
                   </TableCell>
                   <TableCell>{currentRate(currency)}</TableCell>
+                  <TableCell>{rateChange(currency)}</TableCell>
                   <TableCell>
-                    {(
-                      (prevRate(currency) &&
-                        1 - prevRate(currency) / currentRate(currency)) * 100
-                    ).toFixed(2) + "%"}
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => remove(currency)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
-                  <IconButton aria-label="delete">
-                    <DeleteIcon onClick={() => remove(currency)} />
-                  </IconButton>
                 </TableRow>
               ))}
             </TableBody>

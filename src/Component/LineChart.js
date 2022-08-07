@@ -10,10 +10,12 @@ const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
   const [rate, setRate] = useState([]);
 
   useEffect(() => {
-    const credentials = btoa("ga630297588:5ffi12493ts3b85utvme5he247");
+    const XE_API_KEY = process.env.REACT_APP_XE_API_KEY;
+    const credentials = btoa(XE_API_KEY);
+    // const credentials = btoa("ga630297588:5ffi12493ts3b85utvme5he247");
     const auth = { Authorization: `Basic ${credentials}` };
     const url =
-      "https://xecdapi.xe2.com/v1/historic_rate/period/?" +
+      "https://xecdapi.xe.com/v1/historic_rate/period/?" +
       new URLSearchParams({
         from: baseCurrency,
         to: counterCurrency,
@@ -35,7 +37,7 @@ const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
       });
   }, [isClicked, baseCurrency]);
   console.log({ exRate });
-  console.log(today)
+  console.log(today);
 
   const timeFrame = (period) => {
     const labelsStamp = exRate.map((data) => data.timestamp);

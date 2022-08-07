@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {CurrencySelector} from "./CurrencySelector";
+import { CurrencySelector } from "./CurrencySelector";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
@@ -24,12 +24,12 @@ const Convert = () => {
   };
 
   useEffect(() => {
-    // const XE_API_KEY=process.env.REACT_APP_XE_API_KEY;
-    // const credentials = btoa(XE_API_KEY);
-    const credentials = btoa("ga690126616:pg49tjn29ru6p0l4m1mmppdi21");
+    const XE_API_KEY = process.env.REACT_APP_XE_API_KEY;
+    const credentials = btoa(XE_API_KEY);
+    //const credentials = btoa("ga690126616:pg49tjn29ru6p0l4m1mmppdi21");
     const auth = { Authorization: `Basic ${credentials}` };
     const url =
-      "https://xecdapi.xe2.com/v1/convert_from?" +
+      "https://xecdapi.xe.com/v1/convert_from?" +
       new URLSearchParams({
         from: baseCurrency,
         to: counterCurrency,
@@ -95,11 +95,10 @@ const Convert = () => {
         justifyContent="center"
         alignItems="center"
       >
-  
         {amount && baseCurrency && cost && counterCurrency
           ? `${amount} ${baseCurrency} = ${cost} ${counterCurrency}`
           : null}
-     </Grid>
+      </Grid>
     </div>
   );
 };
