@@ -1,8 +1,7 @@
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { useState, useEffect } from "react";
-import { createRoutesFromChildren } from "react-router-dom";
-import { today } from "./CurrencySelector";
+import { today,lastMonth } from "./CurrencySelector";
 
 const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
   const [exRate, setExRate] = useState([]);
@@ -12,14 +11,13 @@ const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
   useEffect(() => {
     const XE_API_KEY = process.env.REACT_APP_XE_API_KEY;
     const credentials = btoa(XE_API_KEY);
-    // const credentials = btoa("ga630297588:5ffi12493ts3b85utvme5he247");
     const auth = { Authorization: `Basic ${credentials}` };
     const url =
       "https://xecdapi.xe.com/v1/historic_rate/period/?" +
       new URLSearchParams({
         from: baseCurrency,
         to: counterCurrency,
-        start_timestamp: "2022-07-05T00:00",
+        start_timestamp: `${lastMonth}T00:00`,
         end_timestamp: `${today}T00:00`,
         interval: "daily",
         amount: 1,
@@ -36,17 +34,13 @@ const LineChart = ({ baseCurrency, counterCurrency, isClicked }) => {
         setRate(jsonData.to[counterCurrency].map((data) => data.mid));
       });
   }, [isClicked, baseCurrency]);
-  console.log({ exRate });
-  console.log(today);
 
   const timeFrame = (period) => {
     const labelsStamp = exRate.map((data) => data.timestamp);
     if (period === "week") {
-      console.log(1);
       setLabels(labelsStamp.map((data) => data.substr(0, 10)).splice(-7));
       setRate(exRate.map((data) => data.mid).splice(-7));
     } else {
-      console.log(2);
       setLabels(labelsStamp.map((data) => data.substr(0, 10)));
       setRate(exRate.map((data) => data.mid));
     }

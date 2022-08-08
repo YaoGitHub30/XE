@@ -9,15 +9,10 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import Tooltip from "@mui/material/Badge";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "./AppTemplate";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -25,8 +20,7 @@ import Chart from "./Component/Chart";
 import Convert from "./Component/Convert";
 import LiveRate from "./Component/LiveRate";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { Button } from "@mui/material";
-import TriggersTooltips from './Component/Notification'
+import TriggersTooltips from "./Component/Notification";
 
 function Copyright(props) {
   return (
@@ -38,7 +32,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Yao XE Website
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -102,7 +96,10 @@ function DashboardContent() {
   };
 
   const changeBadge = (e) => {
-    setBadge(Array.from(new Set([...badge, e])));
+    if(e===''){
+        setBadge([])
+    }else{
+    setBadge(Array.from(new Set([...badge, e])));}
   };
 
   return (
@@ -136,14 +133,7 @@ function DashboardContent() {
             >
               Dashboard
             </Typography>
-            <TriggersTooltips badge={badge}/>
-            <Tooltip title={badge.join(",")}>
-              <IconButton color="inherit"  >
-                <Badge badgeContent={badge.length} color="secondary" >
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>
+            <TriggersTooltips badge={badge} />
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -183,7 +173,15 @@ function DashboardContent() {
               <Routes>
                 <Route
                   path="/"
-                  element={<p>Welcome to Exchange World</p>}
+                  element={
+                    <Typography
+                      variant="h6"
+                      color="text.secondary"
+                      align="center"
+                    >
+                      Welcome to Exchange World
+                    </Typography>
+                  }
                 ></Route>
                 <Route path="/Convert" element={<Convert />}></Route>
                 <Route path="/Chart" element={<Chart />}></Route>
@@ -191,10 +189,20 @@ function DashboardContent() {
                   path="/LiveRate"
                   element={<LiveRate changeBadge={changeBadge} />}
                 ></Route>
-                <Route path="*" element={<p>uh Oh</p>}></Route>
+                <Route
+                  path="*"
+                  element={
+                    <Typography
+                      variant="h6"
+                      color="text.secondary"
+                      align="center"
+                    >
+                      404 Page Not Found
+                    </Typography>
+                  }
+                ></Route>
               </Routes>
             </BrowserRouter>
-
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>

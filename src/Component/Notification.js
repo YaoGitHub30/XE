@@ -5,7 +5,6 @@ import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Button } from "@mui/material";
 
 export default function TriggersTooltips({ badge }) {
   const [open, setOpen] = useState(false);

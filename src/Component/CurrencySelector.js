@@ -20,6 +20,13 @@ var mmYe = String(yesterday.getMonth() + 1).padStart(2, "0");
 var yyyyYe = yesterday.getFullYear();
 yesterday = yyyyYe + "-" + mmYe + "-" + ddYe;
 
+var lastMonth= new Date(new Date().getTime() - 30*24 * 60 * 60 * 1000);
+var ddMth = String(lastMonth.getDate()).padStart(2, "0");
+var mmMth = String(lastMonth.getMonth() + 1).padStart(2, "0");
+var yyyyMth = lastMonth.getFullYear();
+lastMonth = yyyyMth + "-" + mmMth + "-" + ddMth;
+
+
 const CurrencySelector = ({ id, value, onChange }) => {
   const [currencies, setCurrencies] = useState([]);
 
@@ -39,7 +46,7 @@ const CurrencySelector = ({ id, value, onChange }) => {
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }}>
       <InputLabel id={id}>{id}</InputLabel>
-      <Select labelId={id} onChange={onChange} label={id} value={value}>
+      <Select labelId={id} onChange={onChange} label={id} value={value||""}>
         {CurrencyList.map((currency) => (
           <MenuItem value={currency.iso} key={v4()}>
             {currency.iso}-{currency.currency_name}
@@ -49,4 +56,4 @@ const CurrencySelector = ({ id, value, onChange }) => {
     </FormControl>
   );
 };
-export { CurrencySelector, today, yesterday };
+export { CurrencySelector, today, yesterday,lastMonth };

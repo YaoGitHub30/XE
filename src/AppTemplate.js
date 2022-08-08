@@ -9,11 +9,6 @@ import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp';
 import { Divider } from '@mui/material';
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
-import Convert from "./Component/Convert";
-import Chart from "./Component/Chart";
-import LiveRate from "./Component/LiveRate";
-import Link from '@mui/material';
 
 export const mainListItems = (
   <React.Fragment>

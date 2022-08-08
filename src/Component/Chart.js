@@ -12,6 +12,7 @@ const Chart = () => {
   const [baseCurrency, setBaseCurrency] = useState();
   const [counterCurrency, setCounterCurrency] = useState();
   const [isClicked, setIsClicked] = useState(false);
+  
   const swap = () => {
     const baseTemp = baseCurrency;
     const counterTemp = counterCurrency;
@@ -34,9 +35,8 @@ const Chart = () => {
           />
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 60 }}>
-          <IconButton>
+          <IconButton onClick={swap}>
             <SwapHorizontalCircleRoundedIcon
-              onClick={swap}
               fontSize="large"
               color="primary"
             />

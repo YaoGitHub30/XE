@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import useToggleState from "../Hooks/useToggleState";
 import { CurrencySelector } from "./CurrencySelector";
 import { v4 } from "uuid";
-import { Paper, List, ListItem, ListItemText, Divider } from "@mui/material";
+import { Paper} from "@mui/material";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,6 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { yesterday } from "./CurrencySelector";
 
+
 const LiveRate = ({ changeBadge }) => {
   const [baseCurrency, setBaseCurrency] = useState("USD");
   const [counterCurrencies, setCounterCurrencies] = useState(["AUD"]);
@@ -25,7 +26,6 @@ const LiveRate = ({ changeBadge }) => {
   useEffect(() => {
     const XE_API_KEY = process.env.REACT_APP_XE_API_KEY;
     const credentials = btoa(XE_API_KEY);
-    //const credentials = btoa("ga690126616:pg49tjn29ru6p0l4m1mmppdi21");
     const auth = { Authorization: `Basic ${credentials}` };
     const url1 =
       "https://xecdapi.xe.com/v1/convert_from?" +
@@ -48,7 +48,6 @@ const LiveRate = ({ changeBadge }) => {
       .then((response) => response.json())
       .then((jsonData) => {
         setExRate(jsonData.to);
-        // console.log(jsonData.to);
       });
     fetch(url2, { headers: auth })
       .then((response) => response.json())
@@ -73,6 +72,7 @@ const LiveRate = ({ changeBadge }) => {
       (counterCurrency) => counterCurrency !== currency
     );
     setCounterCurrencies([...newCounterCurrencies, baseCurrency]);
+    changeBadge('');
     setBaseCurrency(currency);
   };
 
@@ -105,22 +105,23 @@ const LiveRate = ({ changeBadge }) => {
       const diff =
         (prevRate(currency) && currentRate(currency) / prevRate(currency) - 1) *
         100;
-      if (!Number.isNaN(diff) && Math.abs(diff) > 0.1) {
+      if (!Number.isNaN(diff) && Math.abs(diff) > 0.5) {
         changeBadge(currency + " alert, change is " + diff.toFixed(2) + "%");
       }
     });
-  }, [counterCurrencies, yesterdayRate]);
-
+  }, [baseCurrency,counterCurrencies, yesterdayRate]);
+  
   return (
     <div>
       <Paper>
+      
         <Grid
           container
           direction="row"
           justifyContent="center"
           alignItems="center"
         >
-          {/* <Title>Live Exchange Rates</Title> */}
+          <h3>Live Exchange Rates</h3>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -130,9 +131,10 @@ const LiveRate = ({ changeBadge }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow key={v4()}>
+              <TableRow key={v4()} >
                 <TableCell>{baseCurrency}</TableCell>
                 <TableCell>1</TableCell>
+                <TableCell>Base</TableCell>
               </TableRow>
               {counterCurrencies.map((currency) => (
                 <TableRow key={v4()}>

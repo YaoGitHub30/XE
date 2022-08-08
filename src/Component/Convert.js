@@ -7,7 +7,6 @@ import { Grid } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { TextField } from "@mui/material";
 import SwapHorizontalCircleRoundedIcon from "@mui/icons-material/SwapHorizontalCircleRounded";
-import InputLabel from "@mui/material/InputLabel";
 
 const Convert = () => {
   const [amount, setAmount] = useState();
@@ -22,11 +21,11 @@ const Convert = () => {
     setBaseCurrency(counterTemp);
     setCounterCurrency(baseTemp);
   };
+ 
 
   useEffect(() => {
     const XE_API_KEY = process.env.REACT_APP_XE_API_KEY;
     const credentials = btoa(XE_API_KEY);
-    //const credentials = btoa("ga690126616:pg49tjn29ru6p0l4m1mmppdi21");
     const auth = { Authorization: `Basic ${credentials}` };
     const url =
       "https://xecdapi.xe.com/v1/convert_from?" +
@@ -59,7 +58,6 @@ const Convert = () => {
           ></TextField>
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 60 }}>
-          {/* <InputLabel id="From">From</InputLabel> */}
           <CurrencySelector
             id="From"
             value={baseCurrency}
@@ -67,16 +65,14 @@ const Convert = () => {
           />
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 60 }}>
-          <IconButton>
+          <IconButton onClick={swap}>
             <SwapHorizontalCircleRoundedIcon
-              onClick={swap}
               fontSize="large"
               color="primary"
             />
           </IconButton>
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 60 }}>
-          {/* <InputLabel id="To">To</InputLabel> */}
           <CurrencySelector
             id="To"
             value={counterCurrency}
