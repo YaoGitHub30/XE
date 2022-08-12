@@ -29,7 +29,7 @@ lastMonth = yyyyMth + "-" + mmMth + "-" + ddMth;
 
 const CurrencySelector = ({ id, value, onChange }) => {
   const [currencies, setCurrencies] = useState([]);
-
+//Due to the limited API click, I have copied the currencies to a seperate file.
   // useEffect(() => {
   // const XE_API_KEY=process.env.REACT_APP_XE_API_KEY;
   // const credentials = btoa(XE_API_KEY);

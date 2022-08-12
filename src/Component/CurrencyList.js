@@ -1,3 +1,4 @@
+//to limit the usage of the API clicks, I imported all the currencies in this file.
 const CurrencyList=[
 {iso: 'USD', currency_name: 'US Dollar', is_obsolete: false},
 {iso: 'AUD', currency_name: 'Australian Dollar', is_obsolete: false},
